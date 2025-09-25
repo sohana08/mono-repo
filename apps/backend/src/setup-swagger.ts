@@ -1,23 +1,21 @@
 import { type INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-export function setupSwagger(app: INestApplication): void {
+export function setupSwagger(app: INestApplication, port: number): void {
   const documentBuilder = new DocumentBuilder()
-    .setTitle(' Auth Service API')
+    .setTitle('Backend Service API')
+    .setDescription('The Backend Service API documentation')
+    .setVersion('1.0')
     .addBearerAuth();
 
-  if (process.env.API_VERSION) {
-    documentBuilder.setVersion(process.env.API_VERSION);
-  }
-
   const document = SwaggerModule.createDocument(app, documentBuilder.build());
-  SwaggerModule.setup('documentation', app, document, {
+  SwaggerModule.setup('api/docs', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },
   });
 
   console.info(
-    `Documentation: http://localhost:${process.env.PORT}/documentation`,
+    `📚 API Documentation: http://localhost:${port}/api/docs`,
   );
 }

@@ -16,6 +16,7 @@ import morgan from 'morgan';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 
 import { AppModule } from './app.module';
+import { setupSwagger } from './setup-swagger';
 import { 
   HttpExceptionFilter, 
   QueryFailedFilter 
@@ -66,16 +67,22 @@ export async function bootstrap(): Promise<NestExpressApplication> {
 
   app.use(expressCtx);
 
+  // const port = configService.app.port;
+  const port = 3020;
+
+  // Enable Swagger documentation
+  setupSwagger(app, port);
+
   // Starts listening for shutdown hooks
   // if (!configService.isDevelopment) {
   //   app.enableShutdownHooks();
   // }
 
-  // const port = configService.app.port;
-  const port = 3020;
   await app.listen(port);
 
-  console.info(`server running on ${await app.getUrl()}/svc`);
+  console.info(`🚀 Server running on: http://localhost:${port}`);
+  console.info(`📋 API Base URL: http://localhost:${port}/svc`);
+  console.info(`👤 Users API: http://localhost:${port}/svc/users`);
 
   return app;
 }
