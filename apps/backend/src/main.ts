@@ -81,7 +81,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   await app.listen(port);
 
   console.info(`🚀 Server running on: http://localhost:${port}`);
-  console.info(`📋 API Base URL: http://localhost:${port}/svc`);
+  console.info(`📋 API Base URL: http://localhost:${port}/svc/api/docs`);
   console.info(`👤 Users API: http://localhost:${port}/svc/users`);
 
   return app;

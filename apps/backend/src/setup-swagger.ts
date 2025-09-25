@@ -9,13 +9,13 @@ export function setupSwagger(app: INestApplication, port: number): void {
     .addBearerAuth();
 
   const document = SwaggerModule.createDocument(app, documentBuilder.build());
-  SwaggerModule.setup('api/docs', app, document, {
+  SwaggerModule.setup('svc/api/docs', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
     },
   });
 
   console.info(
-    `📚 API Documentation: http://localhost:${port}/api/docs`,
+    `📚 API Documentation: http://localhost:${port}/svc/api/docs`,
   );
 }
