@@ -1,10 +1,7 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
@@ -26,7 +23,8 @@
           "buildDepsName": "build-deps",
           "watchDepsName": "watch-deps"
         }
-      }
+      },
+      "exclude": ["libs/*"]
     },
     {
       "plugin": "@nx/webpack/plugin",
@@ -50,6 +48,15 @@
       "options": {
         "buildTarget": "docker:build",
         "runTarget": "docker:run"
+      }
+    },
+    {
+      "plugin": "@nx/js/typescript",
+      "include": ["libs/*"],
+      "options": {
+        "typecheck": {
+          "targetName": "typecheck"
+        }
       }
     }
   ]

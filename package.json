@@ -42,7 +42,6 @@
   },
   "workspaces": [
     "apps/*",
-    "auth",
-    "auth-e2e"
+    "libs/*"
   ]
 }
