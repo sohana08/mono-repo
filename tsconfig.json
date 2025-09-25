@@ -4,10 +4,10 @@
   "files": [],
   "references": [
     {
-      "path": "./apps/backend-e2e"
+      "path": "./apps/backend"
     },
     {
-      "path": "./apps/backend"
+      "path": "./apps/auth"
     }
   ]
 }
