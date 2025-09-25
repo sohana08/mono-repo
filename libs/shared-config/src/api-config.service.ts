@@ -65,6 +65,12 @@ export class ApiConfigService {
     };
   }
 
+  /** ---------- documentation ---------- */
+  get documentationEnabled(): boolean {
+    // Enable documentation in development by default
+    return this.isDevelopment;
+  }
+
   /** ---------- database (MySQL / TypeORM) ---------- */
   get mysqlConfig(): TypeOrmModuleOptions {
     // let entities = [
@@ -101,7 +107,7 @@ export class ApiConfigService {
     return {
       type: 'mysql',
       name: 'default',
-      keepConnectionAlive: !this.isTest,
+      // keepConnectionAlive: !this.isTest,
       dropSchema: this.isTest,
       // entities,
       // migrations,
