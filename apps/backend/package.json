@@ -80,10 +80,40 @@
           "build",
           "prune"
         ]
+      },
+      "db:create": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node -r ts-node/register/transpile-only -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli migration:create apps/backend/src/database/migrations/Empty",
+          "cwd": "{workspaceRoot}"
+        }
+      },
+      "db:generate": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node -r ts-node/register/transpile-only -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli migration:generate -d apps/backend/ormconfig.ts apps/backend/src/database/migrations/Auto",
+          "cwd": "{workspaceRoot}"
+        }
+      },
+      "db:run": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node -r ts-node/register/transpile-only -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli migration:run -d apps/backend/ormconfig.ts",
+          "cwd": "{workspaceRoot}"
+        }
+      },
+      "db:revert": {
+        "executor": "nx:run-commands",
+        "options": {
+          "command": "node -r ts-node/register/transpile-only -r tsconfig-paths/register -r dotenv/config ./node_modules/typeorm/cli migration:revert -d apps/backend/ormconfig.ts",
+          "cwd": "{workspaceRoot}"
+        }
       }
     }
   },
   "dependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/morgan": "^1.9.10",
     "class-transformer": "^0.5.1",
     "mysql2": "^3.15.1"
   }
