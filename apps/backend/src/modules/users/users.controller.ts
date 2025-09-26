@@ -1,15 +1,27 @@
-import { Controller, Get, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Delete, Query, ValidationPipe } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UsersService } from './users.service';
-
+import { BankPageOptionsDto } from './dto/bank-page-options.dto';
+import {
+  PageDto
+} from '@test-app/shared-config';
+import { BankDto } from './dto/bank.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   // HTTP REST endpoints
+  // @Get()
+  // findAllHttp() {
+  //   return this.usersService.findAll();
+  // }
+
   @Get()
-  findAllHttp() {
-    return this.usersService.findAll();
+  getAllUser(
+    @Query(new ValidationPipe({ transform: true }))
+    pageOptionsDto: BankPageOptionsDto,
+  ): Promise<PageDto<BankDto>> {
+    return this.usersService.getUsers(pageOptionsDto);
   }
 
   @Get(':id')

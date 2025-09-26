@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  DeleteDateColumn,
 } from 'typeorm';
 import { AbstractDto } from '../common/dto/abstract.dto';
 
@@ -29,10 +28,6 @@ export abstract class AbstractEntity<
     onUpdate: 'CURRENT_TIMESTAMP',
   })
   updatedAt!: Date;
-
-  // Optional: enable soft deletes for all entities
-  @DeleteDateColumn({ type: 'timestamp', nullable: true })
-  deletedAt?: Date | null;
 
   toDto(options?: O): DTO {
     const dtoClass = (this as any).dtoClass as

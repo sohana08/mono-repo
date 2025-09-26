@@ -1,3 +1,5 @@
+import './boilerplate.polyfill'; // MUST be first
+
 import {
   HttpStatus,
   UnprocessableEntityException,
@@ -17,9 +19,9 @@ import { initializeTransactionalContext } from 'typeorm-transactional';
 
 import { AppModule } from './app.module';
 import { setupSwagger } from './setup-swagger';
-import { 
-  HttpExceptionFilter, 
-  QueryFailedFilter 
+import {
+  HttpExceptionFilter,
+  QueryFailedFilter
 } from '@test-app/shared-config';
 
 export async function bootstrap(): Promise<NestExpressApplication> {

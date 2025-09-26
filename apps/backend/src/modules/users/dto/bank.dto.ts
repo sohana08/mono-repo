@@ -5,13 +5,13 @@ import {
 
 export class BankDto extends AbstractDto {
   name!: string;
-  swiftCode!: string;
-  countryCode!: string;
+  email!: string;
+  abbreviation!: string;
 
   constructor(entity: BankEntity) {
     super(entity);
     this.name = entity.name;
-    this.swiftCode = entity.swiftCode;
-    this.countryCode = entity.countryCode;
+    this.email = entity.email;
+    this.abbreviation = entity.abbreviation;
   }
 }

@@ -7,11 +7,11 @@ import { AbstractEntity, UseDto } from '@test-app/shared-config';
 export class BankEntity extends AbstractEntity<BankDto> {
   @Index({ unique: true })
   @Column({ length: 20 })
-  swiftCode!: string;
+  email!: string;
 
   @Column({ length: 150 })
   name!: string;
 
   @Column({ length: 3 })
-  countryCode!: string; // e.g., "BTN"
+  abbreviation!: string; // e.g., "BTN"
 }

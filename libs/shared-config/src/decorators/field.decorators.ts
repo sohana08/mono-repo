@@ -12,6 +12,7 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  Matches,
   Max,
   MaxLength,
   Min,
@@ -20,6 +21,9 @@ import {
   ValidateIf,
   ValidateNested,
 } from 'class-validator';
+
+const ToUndefinedIfEmpty = () =>
+  Transform(({ value }) => (value === '' ? undefined : value));
 
 /* =========================
  * Helpers
@@ -252,44 +256,73 @@ export const NumberFieldOptional = (
 export function StringField(
   options: Omit<ApiPropertyOptions, 'type'> & IStringFieldOptions = {},
 ): PropertyDecorator {
-  const decorators = [Type(() => String), IsString({ each: options.each })];
+  const decs: PropertyDecorator[] = [];
 
-  if (options.nullable) {
-    decorators.push(IsNullable({ each: options.each }));
-  } else {
-    decorators.push(NotEquals(null, { each: options.each }));
-  }
+  if (options.each) decs.push(ToArray());
 
+  // transforms first
+  decs.push(Type(() => String));
+  if (options.trim !== false) decs.push(Trim());
+  if (options.toLowerCase) decs.push(ToLowerCase());
+  if (options.toUpperCase) decs.push(ToUpperCase());
+
+  // required vs optional
+  if (options.required === false) decs.push(IsOptional());
+  else decs.push(IsDefined());
+
+  // nullability
+  if (options.nullable) decs.push(IsNullable({ each: options.each }));
+  else decs.push(NotEquals(null, { each: options.each }));
+
+  // validators
+  decs.push(IsString({ each: options.each }));
+
+  // default min length: only if required (or explicit)
+  const minLen =
+    typeof options.minLength === 'number'
+      ? options.minLength
+      : options.required !== false
+        ? 1
+        : undefined;
+  if (typeof minLen === 'number') decs.push(MinLength(minLen, { each: options.each }));
+
+  if (typeof options.maxLength === 'number') decs.push(MaxLength(options.maxLength, { each: options.each }));
+  if (options.pattern) decs.push(Matches(options.pattern, { each: options.each }));
+
+  // swagger
   if (options.swagger !== false) {
-    decorators.push(
-      ApiProperty({ type: String, ...options, isArray: options.each }),
+    decs.push(
+      ApiProperty({
+        type: String,
+        isArray: options.each,
+        nullable: options.nullable,
+        required: options.required !== false,
+        minLength: minLen,
+        maxLength: options.maxLength,
+        ...options,
+      }),
     );
   }
 
-  const minLength = options.minLength || 1;
-
-  decorators.push(MinLength(minLength, { each: options.each }));
-
-  if (options.maxLength) {
-    decorators.push(MaxLength(options.maxLength, { each: options.each }));
-  }
-
-  if (options.toLowerCase) {
-    decorators.push(ToLowerCase());
-  }
-
-  if (options.toUpperCase) {
-    decorators.push(ToUpperCase());
-  }
-
-  return applyDecorators(...decorators);
+  return applyDecorators(...decs);
 }
 
 
-export const StringFieldOptional = (
-  opts: Omit<ApiPropertyOptions, 'type'> & IStringFieldOptions = {},
-) => StringField({ ...opts, required: false });
 
+export function StringFieldOptional(
+  options: Omit<ApiPropertyOptions, 'type' | 'required'> & IStringFieldOptions = {},
+): PropertyDecorator {
+  const decs: PropertyDecorator[] = [];
+  decs.push(ToUndefinedIfEmpty());                 // '' -> undefined
+  if (options.each) decs.push(ToArray());
+  decs.push(IsOptional());                         // short-circuits others when undefined
+  decs.push(StringField({ required: false, ...options }));
+  // ensure Swagger shows required: false
+  if (options.swagger !== false) {
+    decs.push(ApiProperty({ type: String, required: false, isArray: options.each, nullable: options.nullable, ...options }));
+  }
+  return applyDecorators(...decs);
+}
 /* =========================
  * EnumField (+ Optional)
  * ========================= */

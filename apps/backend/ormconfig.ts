@@ -1,4 +1,7 @@
 // apps/backend/ormconfig.ts
+import '../backend/src/boilerplate.polyfill'; // polyfills, must be first
+import { SnakeNamingStrategy } from './src/snake-naming.strategy';
+
 import 'reflect-metadata';
 import { config } from 'dotenv';
 import { resolve } from 'path';
@@ -24,6 +27,7 @@ export default new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
+  namingStrategy: new SnakeNamingStrategy(),
   entities: [
     isTs
       ? 'apps/backend/src/modules/**/*.entity.ts'

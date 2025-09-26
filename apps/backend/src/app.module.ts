@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { SharedModule, ApiConfigService } from '@test-app/shared-config';
 import { UsersModule } from './modules/users/users.module';
+import { SnakeNamingStrategy } from './snake-naming.strategy';
 
 @Module({
   imports: [
@@ -24,6 +25,8 @@ import { UsersModule } from './modules/users/users.module';
         migrationsRun: false,      // run via CLI instead
         synchronize: false,
         autoLoadEntities: true,
+        namingStrategy: new SnakeNamingStrategy(),
+        logging: true,
       }),
     }),
   ],
