@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    
     "composite": true,
     "declarationMap": true,
     "emitDeclarationOnly": true,
@@ -17,6 +16,8 @@
     "skipLibCheck": true,
     "strict": true,
     "target": "es2022",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "customConditions": ["@test-app/source"]
   }
 }

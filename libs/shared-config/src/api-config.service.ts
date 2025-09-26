@@ -3,11 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import type { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { isNil } from 'lodash';
 
-/**
- * Single-file, monorepo-friendly config accessor.
- * Put your shared env keys here (Redis, S3, Email, etc.),
- * plus any app-specific getters you like.
- */
+
 @Injectable()
 export class ApiConfigService {
   constructor(private readonly config: ConfigService) { }
@@ -73,37 +69,6 @@ export class ApiConfigService {
 
   /** ---------- database (MySQL / TypeORM) ---------- */
   get mysqlConfig(): TypeOrmModuleOptions {
-    // let entities = [
-    //   __dirname + '/../../modules/**/*.entity{.ts,.js}',
-    //   __dirname + '/../../modules/**/*.view-entity{.ts,.js}',
-    // ];
-    // let migrations = [__dirname + '/../../database/migrations/*{.ts,.js}'];
-
-    // // HMR support if you use webpack HMR
-    // if ((module as any).hot) {
-    //   const entityContext = (require as any).context(
-    //     './../../modules',
-    //     true,
-    //     /\.entity\.ts$/,
-    //   );
-    //   entities = entityContext.keys().map((id: string) => {
-    //     const m = entityContext<Record<string, unknown>>(id);
-    //     const [entity] = Object.values(m);
-    //     return entity as string;
-    //   });
-
-    //   const migrationContext = (require as any).context(
-    //     './../../database/migrations',
-    //     false,
-    //     /\.ts$/,
-    //   );
-    //   migrations = migrationContext.keys().map((id: string) => {
-    //     const m = migrationContext<Record<string, unknown>>(id);
-    //     const [migration] = Object.values(m);
-    //     return migration as string;
-    //   });
-    // }
-
     return {
       type: 'mysql',
       name: 'default',

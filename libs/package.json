@@ -15,7 +15,9 @@
   "dependencies": {
     "@nestjs/config": "^4.0.2",
     "@nestjs/typeorm": "^11.0.0",
+    "@types/bcrypt": "^6.0.0",
     "@types/lodash": "^4.17.20",
+    "bcrypt": "^6.0.0",
     "lodash": "^4.17.21"
   }
 }

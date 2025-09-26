@@ -1,37 +1,19 @@
-import { Global, Module, Provider } from '@nestjs/common';
+// libs/shared-config/src/shared-config.module.ts
+import { Global, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ApiConfigService } from '../api-config.service';
-
-const providers: Provider[] = [
-  ApiConfigService,
-];
 
 @Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [
-        // App-specific env files (higher priority)
-        'apps/auth/.env',
-        'apps/backend/.env',
-        // Shared env file (lower priority - fallback)
-        '.env.shared',
-      ],
-      cache: true,
+      envFilePath: ['.env.shared', '.env', 'apps/backend/.env', 'apps/auth/.env'],
       expandVariables: true,
+      cache: true,
     }),
-    // Comment out TypeORM temporarily to debug
-    // TypeOrmModule.forRootAsync({
-    //   useFactory: (apiConfigService: ApiConfigService) => {
-    //     return apiConfigService.mysqlConfig;
-    //   },
-    //   inject: [ApiConfigService],
-    // }),
   ],
-  providers,
-  exports: [...providers],
+  providers: [ApiConfigService],
+  exports: [ApiConfigService, ConfigModule],
 })
 export class SharedModule { }
-
-
