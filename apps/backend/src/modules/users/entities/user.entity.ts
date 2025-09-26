@@ -1,13 +1,17 @@
-import { Column } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
+import { BankDto } from '../dto/bank.dto';
+import { AbstractEntity, UseDto } from '@test-app/shared-config';
 
+@Entity('banks')
+@UseDto(BankDto)
+export class BankEntity extends AbstractEntity<BankDto> {
+  @Index({ unique: true })
+  @Column({ length: 20 })
+  swiftCode!: string;
 
-export class User {
-  @Column({ nullable: false })
+  @Column({ length: 150 })
   name!: string;
 
-  @Column({ nullable: false })
-  email!: string;
-
-  @Column({ nullable: false })
-  abbreviation!: string;
+  @Column({ length: 3 })
+  countryCode!: string; // e.g., "BTN"
 }
